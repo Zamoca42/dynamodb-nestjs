@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel, Model } from 'nestjs-dynamoose';
-import { ContactKey, UpdateContactDto } from './contact.dto';
+import { ContactDto, UpdateContactDto } from './contact.dto';
 
 @Injectable()
 export class ContactService {
   constructor(
     @InjectModel('Contact')
-    private contactModel: Model<UpdateContactDto, ContactKey>,
+    private contactModel: Model<UpdateContactDto, { name: string }>,
   ) {}
 
-  async create(createContactDto: UpdateContactDto): Promise<UpdateContactDto> {
+  async create(createContactDto: ContactDto): Promise<UpdateContactDto> {
     return await this.contactModel.create(createContactDto);
   }
 
@@ -17,7 +17,7 @@ export class ContactService {
     return await this.contactModel.scan().exec();
   }
 
-  async findOne(key: ContactKey): Promise<UpdateContactDto> {
+  async findOne(key: { name: string }): Promise<UpdateContactDto> {
     return await this.contactModel.get(key);
   }
 
@@ -29,7 +29,7 @@ export class ContactService {
     return await this.contactModel.update(updateContactDto);
   }
 
-  async remove(key: ContactKey): Promise<void> {
+  async remove(key: { name: string }): Promise<void> {
     return await this.contactModel.delete(key);
   }
 }

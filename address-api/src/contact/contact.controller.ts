@@ -6,19 +6,16 @@ import {
   Param,
   Patch,
   Post,
-  Query,
 } from '@nestjs/common';
 import { ContactService } from './contact.service';
-import { ContactKey, UpdateContactDto } from './contact.dto';
+import { ContactDto, UpdateContactDto } from './contact.dto';
 
 @Controller('contacts')
 export class ContactController {
   constructor(private contactService: ContactService) {}
 
   @Post()
-  create(
-    @Body() createContactDto: UpdateContactDto,
-  ): Promise<UpdateContactDto> {
+  create(@Body() createContactDto: ContactDto): Promise<UpdateContactDto> {
     return this.contactService.create(createContactDto);
   }
 
@@ -27,20 +24,20 @@ export class ContactController {
     return this.contactService.findAll();
   }
 
-  @Get('')
-  search(@Query('q') query: string): Promise<UpdateContactDto[]> {
-    return this.contactService.search(query);
+  @Get(':name')
+  findOne(@Param('name') key: { name: string }): Promise<UpdateContactDto> {
+    return this.contactService.findOne(key);
   }
 
-  @Patch(':id')
+  @Patch(':name')
   update(
     @Body() updateContactDto: UpdateContactDto,
   ): Promise<UpdateContactDto> {
     return this.contactService.update(updateContactDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') key: ContactKey): Promise<void> {
+  @Delete(':name')
+  remove(@Param('name') key: { name: string }): Promise<void> {
     return this.contactService.remove(key);
   }
 }

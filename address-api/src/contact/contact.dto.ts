@@ -1,12 +1,7 @@
 import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString } from 'class-validator';
 import { PartialType } from '@nestjs/mapped-types';
 
-export class ContactKey {
-  @IsString()
-  id: string;
-}
-
-export class ContactDto extends ContactKey {
+export class ContactDto {
   @IsString()
   @IsPhoneNumber()
   phoneNumber: string;
