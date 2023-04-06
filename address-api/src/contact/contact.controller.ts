@@ -6,9 +6,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ContactService } from './contact.service';
-import { UpdateContactDto } from './contact.dto';
+import { ContactKey, UpdateContactDto } from './contact.dto';
 
 @Controller('contacts')
 export class ContactController {
@@ -26,23 +27,20 @@ export class ContactController {
     return this.contactService.findAll();
   }
 
-  @Get(':idx/:id')
-  findOne(
-    @Param('idx') idx: number,
-    @Param('id') id: string,
-  ): Promise<UpdateContactDto> {
-    return this.contactService.findOne(idx, id);
+  @Get('')
+  search(@Query('q') query: string): Promise<UpdateContactDto[]> {
+    return this.contactService.search(query);
   }
 
-  @Patch(':idx/:id')
+  @Patch(':id')
   update(
     @Body() updateContactDto: UpdateContactDto,
   ): Promise<UpdateContactDto> {
     return this.contactService.update(updateContactDto);
   }
 
-  @Delete(':idx/:id')
-  remove(@Param('idx') idx: number, @Param('id') id: string): Promise<void> {
-    return this.contactService.remove(idx, id);
+  @Delete(':id')
+  remove(@Param('id') key: ContactKey): Promise<void> {
+    return this.contactService.remove(key);
   }
 }

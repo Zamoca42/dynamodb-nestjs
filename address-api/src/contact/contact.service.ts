@@ -17,15 +17,19 @@ export class ContactService {
     return await this.contactModel.scan().exec();
   }
 
-  async findOne(idx: number, id: string): Promise<UpdateContactDto> {
-    return await this.contactModel.get({ idx, id });
+  async findOne(key: ContactKey): Promise<UpdateContactDto> {
+    return await this.contactModel.get(key);
+  }
+
+  async search(query: string): Promise<UpdateContactDto[]> {
+    return await this.contactModel.query('name').eq(query).exec();
   }
 
   async update(updateContactDto: UpdateContactDto): Promise<UpdateContactDto> {
     return await this.contactModel.update(updateContactDto);
   }
 
-  async remove(idx: number, id: string): Promise<void> {
-    return await this.contactModel.delete({ idx, id });
+  async remove(key: ContactKey): Promise<void> {
+    return await this.contactModel.delete(key);
   }
 }
