@@ -8,36 +8,38 @@ import {
   Post,
 } from '@nestjs/common';
 import { ContactService } from './contact.service';
-import { ContactDto, UpdateContactDto } from './contact.dto';
+import { Contact } from './entities/contact.entity';
+import { CreateContactDto, UpdateContactDto } from './dto/contact.dto';
 
 @Controller('contacts')
 export class ContactController {
-  constructor(private contactService: ContactService) {}
-
-  @Post()
-  create(@Body() createContactDto: ContactDto): Promise<UpdateContactDto> {
-    return this.contactService.create(createContactDto);
-  }
+  constructor(private readonly contactService: ContactService) {}
 
   @Get()
-  findAll(): Promise<UpdateContactDto[]> {
+  findAll(): Promise<Contact[]> {
     return this.contactService.findAll();
   }
 
-  @Get(':name')
-  findOne(@Param('name') key: { name: string }): Promise<UpdateContactDto> {
-    return this.contactService.findOne(key);
+  @Post()
+  create(@Body() contactData: CreateContactDto): Promise<CreateContactDto> {
+    return this.contactService.create(contactData);
   }
 
-  @Patch(':name')
+  @Get(':id')
+  findOne(@Param('id') UserId: number): Promise<Contact> {
+    return this.contactService.findOne(UserId);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') UserId: number): Promise<void> {
+    return this.contactService.remove(UserId);
+  }
+
+  @Patch(':id')
   update(
-    @Body() updateContactDto: UpdateContactDto,
+    @Param('id') UserId: number,
+    @Body() updateData: UpdateContactDto,
   ): Promise<UpdateContactDto> {
-    return this.contactService.update(updateContactDto);
-  }
-
-  @Delete(':name')
-  remove(@Param('name') key: { name: string }): Promise<void> {
-    return this.contactService.remove(key);
+    return this.contactService.update(UserId, updateData);
   }
 }
