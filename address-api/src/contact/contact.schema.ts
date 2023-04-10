@@ -3,7 +3,7 @@ import { Schema } from 'dynamoose';
 export const ContactSchema = new Schema(
   {
     id: {
-      type: Number,
+      type: String,
       hashKey: true,
     },
     name: {

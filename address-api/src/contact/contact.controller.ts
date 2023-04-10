@@ -26,18 +26,18 @@ export class ContactController {
   }
 
   @Get(':id')
-  findOne(@Param('id') UserId: number): Promise<Contact> {
+  findOne(@Param('id') UserId: string): Promise<Contact> {
     return this.contactService.findOne(UserId);
   }
 
   @Delete(':id')
-  remove(@Param('id') UserId: number): Promise<void> {
+  remove(@Param('id') UserId: string): Promise<void> {
     return this.contactService.remove(UserId);
   }
 
   @Patch(':id')
   update(
-    @Param('id') UserId: number,
+    @Param('id') UserId: string,
     @Body() updateData: UpdateContactDto,
   ): Promise<UpdateContactDto> {
     return this.contactService.update(UserId, updateData);

@@ -1,8 +1,8 @@
-export class contactKey {
-  id: number;
+export class contactUserId {
+  id: string;
 }
 
-export class Contact extends contactKey {
+export class Contact extends contactUserId {
   name: string;
   phoneNumber?: string;
   email?: string;
